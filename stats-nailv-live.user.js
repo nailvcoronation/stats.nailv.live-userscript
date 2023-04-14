@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         stats.nailv.live
+// @name         stats.nailv.live - Bilibili直播数据统计
 // @namespace    http://tampermonkey.net/
 // @license      MIT
 // @version      0.1
