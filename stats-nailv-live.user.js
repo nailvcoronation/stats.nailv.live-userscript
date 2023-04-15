@@ -192,9 +192,9 @@ async function initChart() {
             if (resp.code !== 200)
                 throw new Error(resp.message)
             const streams = resp.data.lives.map(s => s.liveId)
-            if (!streams[0].isFinish) {
-                // found the correct stream
-                streamId = streams[0]
+            if (resp.data.channel.livingInfo) {
+                // 👀
+                streamId = resp.data.channel.livingInfo.liveId
                 const lastTenSids = streams.slice(1, 11)
                 lastTenStreams = []
                 await initLastTenStreams(lastTenSids)
