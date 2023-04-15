@@ -2,7 +2,7 @@
 // @name         stats.nailv.live - Bilibili直播数据统计
 // @namespace    http://tampermonkey.net/
 // @license      MIT
-// @version      0.1
+// @version      0.1.1
 // @description  In case I don't see ya, good afternoon, good evening and good night.
 // @author       NailvCoronation
 // @match        https://live.bilibili.com/*
@@ -33,6 +33,8 @@ function sleep(sec) {
 }
 
 async function getLiveStatus(roomId) {
+    if (roomId === '' || isNaN(Number(roomId)))
+        return false
     try {
         let resp = await fetch(`https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom?room_id=${roomId}`)
         resp = await resp.json()
