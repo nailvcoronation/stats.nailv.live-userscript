@@ -153,25 +153,31 @@ function getDataset(stream) {
     ]
 }
 
-async function updateChart() {
+async function updateCharts() {
     if (!await getLiveStatus(roomId))
         return
     
     let resp
+    let data
     try {
         resp = await fetch(streamApi + streamId)
         resp = await resp.json()
         if (resp.code !== 200)
             throw new Error(resp.message)
+        data = resp.data.data
     } catch (e) {
+        $('#floating-window-title').html(`${new Date().toLocaleTimeString('zh-CN')}获取Danmakus数据失败`)
         console.log(e)
+        await sleep(30)
+        await updateCharts()
+        return
     }
+    $('#floating-window-title').html(`本场直播数据`)
 
-    let data = resp.data.data
     data.danmakus.sort((a, b) => a.sendDate - b.sendDate)
     if (data.danmakus.length === 0) {
         await sleep(10)
-        await updateChart()
+        await updateCharts()
         return
     }
     const datasets = getDataset(data)
@@ -181,7 +187,7 @@ async function updateChart() {
     })
     
     await sleep(30)
-    await updateChart()
+    await updateCharts()
 }
 
 async function initChart() {
@@ -408,7 +414,7 @@ async function initLastTenStreams(sids) {
             title.html('本场直播数据')
             canvasDiv.show()
             await initChart()
-            await updateChart() //recursion function, return when current stream ends
+            await updateCharts() //recursive function, return when current stream ends
         } else {
             title.html('未在直播')
             canvasDiv.hide()
