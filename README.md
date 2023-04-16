@@ -7,3 +7,7 @@
 联系方式：admin@nailv.live
 
 更多统计数据：[stats.nailv.live](stats.nailv.live)
+
+效果展示：
+
+![example](./images/example.png)
