@@ -2,7 +2,7 @@
 // @name         stats.nailv.live - Bilibili直播数据统计
 // @namespace    http://tampermonkey.net/
 // @license      MIT
-// @version      0.1.3
+// @version      0.1.4
 // @description  In case I don't see ya, good afternoon, good evening and good night.
 // @author       NailvCoronation
 // @match        https://live.bilibili.com/*
@@ -22,7 +22,7 @@ const nMinute = 10  // TODO: custom interval
 const roomId = document.URL.split('/').pop().split('?')[0]
 var uid = 0
 var charts = []
-const chartTitles = ['弹幕', '活跃用户', '营收', '高能', '互动/高能比例', '新观众']
+const chartTitles = ['弹幕', '活跃用户', '高能', '营收', '互动/高能比例', '新观众']
 
 var streamId = 0
 var lastTenStreams = []
@@ -121,17 +121,17 @@ function getDataset(stream) {
                 data: Object.values(activeViewers).map(s => s.size),
             }]
         },
-        {   // income
-            labels: nMinuteIntervals.map(ts => (new Date(ts)).toLocaleTimeString('zh-CN', { timeStyle: 'short' })),
-            datasets: [{
-                data: Object.values(income),
-            }]
-        },
         {   // online
             labels: nMinuteIntervals.map(ts => (new Date(ts)).toLocaleTimeString('zh-CN', { timeStyle: 'short' })),
             datasets: [{
                 data: Object.values(onlineNum)  // array of arrays
                     .map(arr => (arr.reduce((sum, x) => sum + x, 0) / arr.length).toFixed(1)),
+            }]
+        },
+        {   // income
+            labels: nMinuteIntervals.map(ts => (new Date(ts)).toLocaleTimeString('zh-CN', { timeStyle: 'short' })),
+            datasets: [{
+                data: Object.values(income),
             }]
         },
         {   // viewer/online ratio
@@ -216,7 +216,7 @@ async function initChart() {
 
 function addAnnotations() {
     // add annotation for danmakus, activeViewer and onlineNum
-    // namely, idx = 0, 1 and 3
+    // namely, idx = 0, 1 and 2
     const baseOptions = {
         type: 'line',
         drawTime: 'beforeDatasetsDraw',
@@ -271,8 +271,8 @@ function addAnnotations() {
         yMin: onlineNum,
         yMax: onlineNum,
     }
-    charts[3].options.plugins.annotation = { annotations: { options: onlineNumOptions } }
-    charts[3].update()
+    charts[2].options.plugins.annotation = { annotations: { options: onlineNumOptions } }
+    charts[2].update()
 }
 
 async function initLastTenStreams(sids) {
