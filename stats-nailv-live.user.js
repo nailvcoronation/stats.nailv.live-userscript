@@ -2,7 +2,7 @@
 // @name         stats.nailv.live - Bilibili直播数据统计
 // @namespace    http://tampermonkey.net/
 // @license      MIT
-// @version      0.1.4
+// @version      0.1.5
 // @description  In case I don't see ya, good afternoon, good evening and good night.
 // @author       NailvCoronation
 // @match        https://live.bilibili.com/*
