@@ -316,8 +316,9 @@ async function initLastTenStreams(sids) {
         promises.push(promise)
     })
     await Promise.all(promises)
-    await sleep(5)
-    initLastTenStreams(sids)
+    if (sids.length !== 0)
+        await sleep(5)
+    await initLastTenStreams(sids)
 }
 
 
