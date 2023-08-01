@@ -27,6 +27,7 @@ const chartTitles = ['弹幕', '活跃用户', '高能', '营收', '互动/高�
 var streamId = 0
 var lastTenStreams = []
 var oldViewers = new Set()
+var windowActivated = false
 
 function sleep(sec) {
     return new Promise(resolve => setTimeout(resolve, sec * 1000));
@@ -154,6 +155,11 @@ function getDataset(stream) {
 }
 
 async function updateCharts() {
+    if (windowActivated == false) {
+        await sleep(1)
+        await updateCharts()
+        return
+    }
     if (!await getLiveStatus(roomId))
         return
     
@@ -331,7 +337,8 @@ async function initLastTenStreams(sids) {
         alt: 'Expand window'
     }).appendTo('body');
 
-    $icon.on('click', function() {
+    $icon.on('click', function () {
+        windowActivated = !windowActivated
         $window.toggle();
     });
 
